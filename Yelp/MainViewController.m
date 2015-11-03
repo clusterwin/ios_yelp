@@ -12,6 +12,7 @@
 #import "YelpBusinessTableViewCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "MBProgressHUD.h"
+#import "FiltersViewController.h"
 
 @interface MainViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *BusinessTableView;
@@ -39,6 +40,8 @@
 	self.navigationItem.titleView = self.searchBar;
 	[self doSearch];
 	
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(onFilterButton)];
+	
 	
 }
 
@@ -46,7 +49,7 @@
 	[MBProgressHUD showHUDAddedTo:self.view animated:YES];
 	[YelpBusiness searchWithTerm:self.searchBar.text
 						sortMode:YelpSortModeBestMatched
-					  categories:@[@"burgers"]
+					  categories:@[]
 						   deals:NO
 					  completion:^(NSArray *businesses, NSError *error) {
 						  self.businesses = businesses;
@@ -100,6 +103,13 @@
 	//self.searchSettings.searchString = searchBar.text;
 	[searchBar resignFirstResponder];
 	[self doSearch];
+}
+
+- (void) onFilterButton{
+	FiltersViewController *vc = [[FiltersViewController alloc]init];
+	
+	UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+	[self presentViewController:nvc animated:YES completion:nil];
 }
 
 /*
