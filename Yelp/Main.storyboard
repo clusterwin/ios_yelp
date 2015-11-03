@@ -48,6 +48,12 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="0.07mi " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Kb-FW-Otx">
+                                                    <rect key="frame" x="262" y="8" width="42" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" ambiguous="YES" misplaced="YES" text="400 Reviews" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mcp-yR-qLS">
                                                     <rect key="frame" x="178" y="33" width="62" height="12"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
@@ -75,12 +81,6 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="0.07mi " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Kb-FW-Otx">
-                                                    <rect key="frame" x="262" y="8" width="42" height="15"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="ztW-LD-eKs" firstAttribute="leading" secondItem="754-rF-dK6" secondAttribute="leadingMargin" id="6dJ-gf-Jy5"/>
@@ -88,7 +88,6 @@
                                                 <constraint firstItem="2m7-si-2oe" firstAttribute="top" secondItem="oRk-cu-FKh" secondAttribute="bottom" constant="6" id="B44-Go-AQa"/>
                                                 <constraint firstItem="Hzc-px-jC7" firstAttribute="top" secondItem="2m7-si-2oe" secondAttribute="bottom" constant="2" id="Dhw-uf-OMn"/>
                                                 <constraint firstItem="oRk-cu-FKh" firstAttribute="top" secondItem="bmX-dO-D4g" secondAttribute="bottom" constant="3.5" id="QtI-0i-Jis"/>
-                                                <constraint firstItem="oRk-cu-FKh" firstAttribute="top" secondItem="bmX-dO-D4g" secondAttribute="bottom" constant="5" id="RqH-9X-Mk5"/>
                                                 <constraint firstItem="bmX-dO-D4g" firstAttribute="top" secondItem="754-rF-dK6" secondAttribute="topMargin" constant="8" id="Uja-bC-q8T"/>
                                                 <constraint firstItem="5Kb-FW-Otx" firstAttribute="top" secondItem="754-rF-dK6" secondAttribute="topMargin" constant="2" id="Z4N-Jj-gS8"/>
                                                 <constraint firstItem="2m7-si-2oe" firstAttribute="leading" secondItem="ztW-LD-eKs" secondAttribute="trailing" constant="8" id="aHm-UJ-JV5"/>
@@ -102,9 +101,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="AddressLabel" destination="5Kb-FW-Otx" id="76q-sd-0tV"/>
+                                            <outlet property="AddressLabel" destination="2m7-si-2oe" id="SHz-AA-cHD"/>
                                             <outlet property="BusinessLabel" destination="bmX-dO-D4g" id="yQu-D3-lIl"/>
-                                            <outlet property="GenreLabel" destination="2m7-si-2oe" id="YXF-wf-Pbk"/>
+                                            <outlet property="GenreLabel" destination="Hzc-px-jC7" id="uzo-Xb-m9S"/>
                                             <outlet property="costLabel" destination="6Pq-Qe-TQs" id="elt-f9-eKA"/>
                                             <outlet property="distanceLabel" destination="5Kb-FW-Otx" id="2g2-ZD-j8m"/>
                                             <outlet property="numberReviewsLabel" destination="Mcp-yR-qLS" id="0OK-5U-4p4"/>

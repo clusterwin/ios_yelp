@@ -12,13 +12,16 @@
 #import "YelpBusinessTableViewCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "MBProgressHUD.h"
+#import "FiltersViewController.h"
 
-@interface MainViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MainViewController () <UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *BusinessTableView;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NSArray *businesses;
 @property (nonatomic, strong) NSArray *filteredData;
 @property (nonatomic, strong) YelpClient *client;
+
+- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSArray *)params;
 @end
 
 @implementation MainViewController
@@ -39,6 +42,8 @@
 	self.navigationItem.titleView = self.searchBar;
 	[self doSearch];
 	
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filter" style:UIBarButtonItemStylePlain target:self action:@selector(onFilterButton)];
+	
 	
 }
 
@@ -46,7 +51,7 @@
 	[MBProgressHUD showHUDAddedTo:self.view animated:YES];
 	[YelpBusiness searchWithTerm:self.searchBar.text
 						sortMode:YelpSortModeBestMatched
-					  categories:@[@"burgers"]
+					  categories:@[]
 						   deals:NO
 					  completion:^(NSArray *businesses, NSError *error) {
 						  self.businesses = businesses;
@@ -74,7 +79,21 @@
 	cell.numberReviewsLabel.text = [NSString stringWithFormat:@"%@ Reviews", biz.reviewCount];
 	cell.AddressLabel.text = biz.address;
 	cell.distanceLabel.text = [NSString stringWithFormat:@"%@", biz.distance];
+	cell.GenreLabel.text = biz.categories;
 	return cell;
+}
+
+- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSArray *)params{
+	[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+	[YelpBusiness searchWithTerm:query
+						sortMode:YelpSortModeBestMatched
+					  categories:params
+						   deals:NO
+					  completion:^(NSArray *businesses, NSError *error) {
+						  self.businesses = businesses;
+						  [MBProgressHUD hideHUDForView:self.view animated:YES];
+						  [self.BusinessTableView reloadData];
+					  }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -100,6 +119,20 @@
 	//self.searchSettings.searchString = searchBar.text;
 	[searchBar resignFirstResponder];
 	[self doSearch];
+}
+
+- (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters{
+	// fire a new network event
+	NSLog(@"fire new network event %@", filters);
+	NSArray *items = [filters[@"category_filter"] componentsSeparatedByString:@","];
+	[self fetchBusinessesWithQuery:@"Restaurants" params:items];
+}
+
+- (void) onFilterButton{
+	FiltersViewController *vc = [[FiltersViewController alloc]init];
+	vc.delegate = self;
+	UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+	[self presentViewController:nvc animated:YES completion:nil];
 }
 
 /*
