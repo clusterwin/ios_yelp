@@ -53,6 +53,7 @@
 						sortMode:YelpSortModeBestMatched
 					  categories:@[]
 						   deals:NO
+						  radius:0
 					  completion:^(NSArray *businesses, NSError *error) {
 						  self.businesses = businesses;
 						  [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -87,10 +88,14 @@
 	[MBProgressHUD showHUDAddedTo:self.view animated:YES];
 	NSArray *cats = [params[@"category_filter"] componentsSeparatedByString:@","];
 	BOOL offeringADeal = [params[@"offering_a_deal"] boolValue];
+	NSInteger sortMode = [params[@"sortByEnum"] integerValue];
+	NSInteger distance = [params[@"distance"] integerValue];
+	
 	[YelpBusiness searchWithTerm:query
-						sortMode:YelpSortModeBestMatched
+						sortMode:sortMode
 					  categories:cats
 						   deals:offeringADeal
+						  radius:distance
 					  completion:^(NSArray *businesses, NSError *error) {
 						  self.businesses = businesses;
 						  [MBProgressHUD hideHUDForView:self.view animated:YES];

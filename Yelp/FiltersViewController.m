@@ -8,13 +8,16 @@
 
 #import "FiltersViewController.h"
 #import "SwitchCell.h"
+#import "LabelCell.h"
 
-@interface FiltersViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate>
+@interface FiltersViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate, LabelCellDelegate>
 
 @property (nonatomic, readonly) NSDictionary *filters;
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSMutableSet *selectedCategories;
 @property (nonatomic, strong) NSNumber *offeringADeal;
+@property (nonatomic, assign) NSInteger *sortBy;
+@property (nonatomic, assign) NSInteger *distance;
 
 - (void)initCategories;
 
@@ -46,11 +49,14 @@
 	self.tableView.dataSource = self;
 	
 	[self.tableView registerNib:[UINib nibWithNibName:@"SwitchCell" bundle:nil] forCellReuseIdentifier:@"SwitchCell"];
+	[self.tableView registerNib:[UINib nibWithNibName:@"LabelCell" bundle:nil] forCellReuseIdentifier:@"LabelCell"];
 	
 	self.navigationController.navigationBar.barTintColor = [UIColor redColor];
 	self.navigationController.navigationBar.translucent = NO;
 	
 	self.offeringADeal = [NSNumber numberWithBool:NO];
+	
+	self.sortBy = [@"0" integerValue];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -62,7 +68,11 @@
 	{
 		return [self.categories count];
 	}
-	else{
+	else if (section == 2){
+		return 3;
+	} else if (section == 1){
+		return 5;
+	} else {
 		return 1;
 	}
 }
@@ -85,16 +95,47 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-	SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
+	static NSString *CellIdentifier = @"LabelCell";
 	if(indexPath.section == 3){
+		SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
 		cell.titleLabel.text = self.categories[indexPath.row][@"name"];
 		cell.on = [self.selectedCategories containsObject:self.categories[indexPath.row]];
+		cell.delegate = self;
+		return cell;
 	} else if (indexPath.section == 0) {
+		SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
 		cell.titleLabel.text = @"Offering a Deal";
 		cell.on = self.offeringADeal > @TRUE ? TRUE : FALSE;
+		cell.delegate = self;
+		return cell;
+	} else if (indexPath.section == 1){
+		LabelCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		if (indexPath.row == 0){
+			cell.mainLabel.text = @"Auto";
+		} else if (indexPath.row == 1){
+			cell.mainLabel.text = @"0.3 miles";
+		} else if (indexPath.row == 2){
+			cell.mainLabel.text = @"1 mile";
+		} else if (indexPath.row == 3){
+			cell.mainLabel.text = @"5 miles";
+		} else if (indexPath.row == 4){
+			cell.mainLabel.text = @"20 miles";
+		}
+		
+		return cell;
+	} else if (indexPath.section == 2){
+		LabelCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+		if (indexPath.row == 0){
+			cell.mainLabel.text = @"Best Match";
+		} else if (indexPath.row == 1){
+			cell.mainLabel.text = @"Distance";
+		} else if (indexPath.row == 2){
+			cell.mainLabel.text = @"Highest Rated";
+		}
+		
+		return cell;
 	}
-	cell.delegate = self;
-	return cell;
+	return nil;
 }
 
 - (void)switchCell:(SwitchCell *)cell didUpdateValue:(BOOL)value {
@@ -111,7 +152,14 @@
 		} else {
 			[self.selectedCategories removeObject:self.categories[indexPath.row]];
 		}
-	
+	}
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+	if (indexPath.section == 1){
+		self.distance = indexPath.row;
+	} else if (indexPath.section == 2){
+		self.sortBy = indexPath.row;
 	}
 }
 
@@ -125,12 +173,34 @@
 		}
 		NSString *categoryFilter = [names componentsJoinedByString:@","];
 		[filters setObject:categoryFilter forKey:@"category_filter"];
-			 
 	}
 	
 	NSString *offeringADeal = self.offeringADeal == @YES ? @"YES" : @"NO";
 	[filters setObject:offeringADeal forKey:@"offering_a_deal"];
 	
+	if(self.distance){
+		float radiusMiles = 0;
+		if(self.distance == 1){
+			radiusMiles = 0.3;
+		} else if (self.distance == 2){
+			radiusMiles = 1;
+		} else if (self.distance == 3){
+			radiusMiles = 5;
+		} else if (self.distance == 4){
+			radiusMiles = 20;
+		}
+        float milesPerMeter = 0.000621371;
+		float meters = radiusMiles / milesPerMeter;
+		
+		
+		NSString *distance = [NSString stringWithFormat: @"%f", meters];
+		[filters setObject:distance forKey:@"distance"];
+	}
+	
+	if(self.sortBy){
+		NSString *sortByEnum = [NSString stringWithFormat: @"%ld", (long)self.sortBy];
+		[filters setObject:sortByEnum forKey:@"sortByEnum"];
+	}
 	return filters;
 }
 
