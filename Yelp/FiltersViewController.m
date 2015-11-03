@@ -10,6 +10,8 @@
 
 @interface FiltersViewController ()
 
+@property (nonatomic, readonly) NSDictionary *filters;
+
 @end
 
 @implementation FiltersViewController
@@ -17,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(onCancel)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(onCancelButton)];
 	
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStylePlain target:self action:@selector(onApplyButton)];
 	
@@ -35,6 +37,7 @@
 }
 
 - (void)onApplyButton{
+	[self.delegate filtersViewController:self didChangeFilters:self.filters];
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 

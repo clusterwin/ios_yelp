@@ -14,7 +14,7 @@
 #import "MBProgressHUD.h"
 #import "FiltersViewController.h"
 
-@interface MainViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MainViewController () <UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *BusinessTableView;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NSArray *businesses;
@@ -105,9 +105,14 @@
 	[self doSearch];
 }
 
+- (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters{
+	// fire a new network event
+	NSLog(@"fire new network event");
+}
+
 - (void) onFilterButton{
 	FiltersViewController *vc = [[FiltersViewController alloc]init];
-	
+	vc.delegate = self;
 	UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
 	[self presentViewController:nvc animated:YES completion:nil];
 }
