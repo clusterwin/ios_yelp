@@ -87,8 +87,10 @@
 	[MBProgressHUD showHUDAddedTo:self.view animated:YES];
 	NSArray *cats = [params[@"category_filter"] componentsSeparatedByString:@","];
 	BOOL offeringADeal = [params[@"offering_a_deal"] boolValue];
+	NSInteger sortMode = [params[@"sortBy"] integerValue];
+	
 	[YelpBusiness searchWithTerm:query
-						sortMode:YelpSortModeBestMatched
+						sortMode:sortMode
 					  categories:cats
 						   deals:offeringADeal
 					  completion:^(NSArray *businesses, NSError *error) {
