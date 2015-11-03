@@ -83,12 +83,14 @@
 	return cell;
 }
 
-- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSArray *)params{
+- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params{
 	[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+	NSArray *cats = [params[@"category_filter"] componentsSeparatedByString:@","];
+	BOOL offeringADeal = [params[@"offering_a_deal"] boolValue];
 	[YelpBusiness searchWithTerm:query
 						sortMode:YelpSortModeBestMatched
-					  categories:params
-						   deals:NO
+					  categories:cats
+						   deals:offeringADeal
 					  completion:^(NSArray *businesses, NSError *error) {
 						  self.businesses = businesses;
 						  [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -124,8 +126,7 @@
 - (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters{
 	// fire a new network event
 	NSLog(@"fire new network event %@", filters);
-	NSArray *items = [filters[@"category_filter"] componentsSeparatedByString:@","];
-	[self fetchBusinessesWithQuery:@"Restaurants" params:items];
+	[self fetchBusinessesWithQuery:self.searchBar.text params:filters];
 }
 
 - (void) onFilterButton{
