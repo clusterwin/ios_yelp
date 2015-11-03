@@ -45,6 +45,12 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 Describe any challenges encountered while building the app.
+Metric to imperial conversions
+Walkthroughs using a mixture of xib, code and storyboard approaches.
+Not accessing internal members using _member as xcode corrected it out. 
+Using code driven development to build delegates for multi sectioned tables. 
+
+
 
 ## License
 
