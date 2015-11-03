@@ -101,9 +101,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="AddressLabel" destination="5Kb-FW-Otx" id="76q-sd-0tV"/>
+                                            <outlet property="AddressLabel" destination="2m7-si-2oe" id="SHz-AA-cHD"/>
                                             <outlet property="BusinessLabel" destination="bmX-dO-D4g" id="yQu-D3-lIl"/>
-                                            <outlet property="GenreLabel" destination="2m7-si-2oe" id="YXF-wf-Pbk"/>
+                                            <outlet property="GenreLabel" destination="Hzc-px-jC7" id="uzo-Xb-m9S"/>
                                             <outlet property="costLabel" destination="6Pq-Qe-TQs" id="elt-f9-eKA"/>
                                             <outlet property="distanceLabel" destination="5Kb-FW-Otx" id="2g2-ZD-j8m"/>
                                             <outlet property="numberReviewsLabel" destination="Mcp-yR-qLS" id="0OK-5U-4p4"/>

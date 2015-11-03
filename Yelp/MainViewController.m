@@ -20,6 +20,8 @@
 @property (nonatomic, strong) NSArray *businesses;
 @property (nonatomic, strong) NSArray *filteredData;
 @property (nonatomic, strong) YelpClient *client;
+
+- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSArray *)params;
 @end
 
 @implementation MainViewController
@@ -77,7 +79,21 @@
 	cell.numberReviewsLabel.text = [NSString stringWithFormat:@"%@ Reviews", biz.reviewCount];
 	cell.AddressLabel.text = biz.address;
 	cell.distanceLabel.text = [NSString stringWithFormat:@"%@", biz.distance];
+	cell.GenreLabel.text = biz.categories;
 	return cell;
+}
+
+- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSArray *)params{
+	[MBProgressHUD showHUDAddedTo:self.view animated:YES];
+	[YelpBusiness searchWithTerm:query
+						sortMode:YelpSortModeBestMatched
+					  categories:params
+						   deals:NO
+					  completion:^(NSArray *businesses, NSError *error) {
+						  self.businesses = businesses;
+						  [MBProgressHUD hideHUDForView:self.view animated:YES];
+						  [self.BusinessTableView reloadData];
+					  }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -108,6 +124,8 @@
 - (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters{
 	// fire a new network event
 	NSLog(@"fire new network event %@", filters);
+	NSArray *items = [filters[@"category_filter"] componentsSeparatedByString:@","];
+	[self fetchBusinessesWithQuery:@"Restaurants" params:items];
 }
 
 - (void) onFilterButton{
