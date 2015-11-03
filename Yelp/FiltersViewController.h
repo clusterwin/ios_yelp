@@ -18,6 +18,7 @@ filtersViewController didChangeFilters:(NSDictionary *)filters;
 @end
 
 @interface FiltersViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, weak) id<FiltersViewControllerDelegate> delegate;
 

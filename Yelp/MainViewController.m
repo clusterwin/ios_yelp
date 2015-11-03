@@ -107,7 +107,7 @@
 
 - (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters{
 	// fire a new network event
-	NSLog(@"fire new network event");
+	NSLog(@"fire new network event %@", filters);
 }
 
 - (void) onFilterButton{
