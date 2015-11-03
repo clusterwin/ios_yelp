@@ -179,8 +179,22 @@
 	[filters setObject:offeringADeal forKey:@"offering_a_deal"];
 	
 	if(self.distance){
-		NSString *distance = [NSString stringWithFormat: @"%ld", (long)self.distance];
-			[filters setObject:distance forKey:@"distance"];
+		float radiusMiles = 0;
+		if(self.distance == 1){
+			radiusMiles = 0.3;
+		} else if (self.distance == 2){
+			radiusMiles = 1;
+		} else if (self.distance == 3){
+			radiusMiles = 5;
+		} else if (self.distance == 4){
+			radiusMiles = 20;
+		}
+        float milesPerMeter = 0.000621371;
+		float meters = radiusMiles / milesPerMeter;
+		
+		
+		NSString *distance = [NSString stringWithFormat: @"%f", meters];
+		[filters setObject:distance forKey:@"distance"];
 	}
 	
 	if(self.sortBy){
